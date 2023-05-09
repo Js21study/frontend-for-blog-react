@@ -10,7 +10,11 @@ import Skeleton from "@mui/material/Skeleton";
 
 import { SideBlock } from "./SideBlock";
 
+
+
+
 export const TagsBlock = ({ items, isLoading = true }) => {
+
   return (
     <SideBlock title="Tags">
       <List>

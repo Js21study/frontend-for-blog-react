@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Clear';
@@ -10,8 +10,10 @@ import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchRemovePosts } from '../../redux/slices/posts';
+import { fetchComments } from '../../redux/slices/comments';
+
 
 export const Post = ({
   id,
@@ -20,7 +22,7 @@ export const Post = ({
   imageUrl,
   user,
   viewsCount,
-  commentsCount,
+
   tags,
   children,
   isFullPost,
@@ -29,16 +31,38 @@ export const Post = ({
 }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const {commentsAll} = useSelector(state => state.comments)
+
+  useEffect(() => {
+    dispatch(fetchComments())
+    
+  }, [])
+  
+  const count = commentsAll.items.filter(el => el.post._id === id).map(el => el._id).length
+
+  
+
+
+
   if (isLoading) {
     return <PostSkeleton />;
   }
-  console.log(imageUrl);
+ 
   const onClickRemove = () => {
     if (window.confirm("Are you sure you want to delete a post?")) {
       dispatch(fetchRemovePosts(id))
     }
     // window.location.reload()
   };
+  // console.log(user);
+  // console.log( {...user});
+ 
+ 
+
+
+
+  
 
   return (
     
@@ -71,7 +95,7 @@ export const Post = ({
           <ul className={styles.tags}>
             {tags.map((name) => (
               <li key={name}>
-                <Link to={`/tag/${name}`}>#{name}</Link>
+                <a href={`/tags/${name}`}>#{name}</a>
               </li>
             ))}
           </ul>
@@ -83,7 +107,7 @@ export const Post = ({
             </li>
             <li>
               <CommentIcon />
-              <span>{commentsCount}</span>
+              <span>{count}</span>
             </li>
           </ul>
         </div>

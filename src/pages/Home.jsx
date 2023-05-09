@@ -1,42 +1,86 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
-import { CommentsBlock } from '../components/CommentsBlock';
+
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts, fetchTags } from '../redux/slices/posts';
+import { fetchPosts, fetchPostsNew, fetchPostsPopular, fetchTags } from '../redux/slices/posts';
+
+
 
 export const Home = () => {
   const dispatch = useDispatch()
+  const [tabsValue, setTabsValue] = useState(0)
 
   const userData = useSelector(state => state.auth.data)
   const {posts, tags} = useSelector(state => state.posts)
 
+
   const isPostsLoading = posts.status === 'loading'
   const isTagsLoading = tags.status === 'loading'
+
+
 
   useEffect(() => {
     dispatch(fetchPosts())
     dispatch(fetchTags())
    
+   
     
   }, [])
-  console.log(posts);
-  console.log(tags);
+
+
+
+
+
+
+  const clickOnAll = () => {
+    dispatch(fetchPosts())
+    setTabsValue(0)
+  }
+
+  const clickOnNeW = () => {
+    dispatch(fetchPostsNew())
+    setTabsValue(1)
+  }
+
+  const clickOnPopular = () => {
+    dispatch(fetchPostsPopular())
+    setTabsValue(2)
+  }
+
+
+  const ListTabs = [ 
+    {name: 'All', func: clickOnAll},
+    {name:'New', func: clickOnNeW},
+    {name:'Popular', func: clickOnPopular},
+    ]
+  
+
+
   return (
     <>
-      <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
-        <Tab label="Новые" />
-        <Tab label="Популярные" />
+
+
+      <Tabs style={{ marginBottom: 15 }} value={tabsValue} aria-label="basic tabs example">
+
+          {ListTabs.map( (catg, i) =>
+              <Tab key={catg.name} label={catg.name} onClick={catg.func} ></Tab>
+              )
+          }
+        
       </Tabs>
+
+
       <Grid container spacing={4}>
-        <Grid xs={8} item>
+        <Grid lg={8} item>
           {(isPostsLoading ? [...Array(5)]: posts.items).map((obj, index) => 
-            isPostsLoading ? (<Post isLoading={true} key={index}/> ):
+            isPostsLoading ? (<Post isLoading={true} key={index}/> ): 
+          
            ( <Post
               key={obj._id}
               id={obj._id}
@@ -45,34 +89,16 @@ export const Home = () => {
               user={obj.user}
               createdAt={obj.createdAt}
               viewsCount={obj.viewsCount}
-              commentsCount={0}
+         
               tags={obj.tags}
               isEditable={userData?._id === obj.user._id}
             />)
           )}
         </Grid>
-        <Grid xs={4} item>
+        <Grid lg={4} item>
          <TagsBlock items={tags.items} isLoading={isTagsLoading} />
           
-          {/* <CommentsBlock
-            items={[
-              {
-                user: {
-                  fullName: 'Вася Пупкин',
-                  avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                },
-                text: 'Это тестовый комментарий',
-              },
-              {
-                user: {
-                  fullName: 'Иван Иванов',
-                  avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-                },
-                text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-              },
-            ]}
-            isLoading={false}
-          /> */}
+         
         </Grid>
       </Grid>
     </>

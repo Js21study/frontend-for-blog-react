@@ -48,6 +48,7 @@ export const AddPost = () => {
 
   const onSubmit = async () => {
     try {
+
       setIsLoading(true)
       const fields = {
         title,
@@ -55,12 +56,16 @@ export const AddPost = () => {
         tags,
         imageUrl,
       }
+      console.log(id);
       const { data } = isEditing 
       ? await instance.patch(`/posts/${id}`, fields)
       : await instance.post('/posts', fields)
+      
 
       const _id = isEditing ? id : data._id
       navigate(`/posts/${_id}`)
+      
+
     } catch (error) {
       console.warn(error);
       alert("Something went wrong with creating post! Please, try again!")
@@ -74,14 +79,14 @@ export const AddPost = () => {
         setTitle(data.title)
         setText(data.text)
         setImageUrl(data.imageUrl)
-        setTags(data.tags)
+        setTags(data.tags.join(','))
       })
       .catch(err => {
         console.warn(err);
         alert("Something went wrong with getting post! Please, try again!")
       })
     }
-  }, [])
+  }, [id])
   
 
   const options = React.useMemo(
@@ -128,7 +133,7 @@ export const AddPost = () => {
         fullWidth
       />
       <TextField classes={{ root: styles.tags }} variant="standard" value={tags}
-        onChange={e => setTags(e.target.value)} placeholder="Tags" fullWidth />
+        onChange={e => setTags(e.target.value)} placeholder="Tags" helperText='Write your tags without space separated by commas. Example is "tag,tag,tag"' fullWidth />
       <SimpleMDE className={styles.editor} value={text} onChange={onChange} options={options} />
       <div className={styles.buttons}>
         <Button onClick={onSubmit} size="large" variant="contained" color='success'>

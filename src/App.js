@@ -5,6 +5,10 @@ import { Route, Routes } from "react-router-dom";
 import { Header } from "./components";
 import { Home, FullPost, Registration, AddPost, Login } from "./pages";
 import { fetchAuthMe, isAuthSelector } from "./redux/slices/auth";
+import Tags from "./pages/Tags";
+import NotFound from "./pages/NotFound";
+import Person from "./pages/Person";
+
 
 function App() {
   const dispatch = useDispatch()
@@ -25,6 +29,9 @@ function App() {
           <Route path="/add-post" element={<AddPost />}/>
           <Route path="/login" element={<Login />}/>
           <Route path="/register" element={<Registration />}/>
+          <Route path="/tags/:name" element={<Tags />}/>
+          <Route path="/person/:id" element={<Person/>}/>
+          <Route path="*" element={<NotFound />}/>
         </Routes>
       </Container>
     </>

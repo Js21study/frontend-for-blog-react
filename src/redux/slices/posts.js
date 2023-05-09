@@ -6,6 +6,16 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async() => {
     return data
 })
 
+export const fetchPostsNew = createAsyncThunk('posts/fetchPostsNew', async() => {
+  const { data } = await instance.get('/posts/new');
+  return data
+})
+
+export const fetchPostsPopular = createAsyncThunk('posts/fetchPostsPopular', async() => {
+  const { data } = await instance.get('/posts/popular');
+  return data
+})
+
 export const fetchTags = createAsyncThunk('posts/fetchTags', async() => {
     const { data } = await instance.get('/posts/tags');
     return data
@@ -16,12 +26,22 @@ export const fetchRemovePosts = createAsyncThunk('posts/fetchRemovePosts', async
   
 })
 
+export const fetchTagsByName = createAsyncThunk('posts/fetchTagsByName', async(name) => {
+  const { data } = await instance.get(`/posts/tags/${name}`);
+  return data
+  
+})
+
 const initialState = {
   posts: {
     items: [],
     status: 'loading',
   }, 
   tags: {
+    items: [],
+    status: 'loading',
+  },
+  allTagsByName: {
     items: [],
     status: 'loading',
   }
@@ -48,6 +68,35 @@ export const postsSlice = createSlice({
     },
 
 
+  [fetchPostsNew.pending]: (state) => {
+      state.posts.items = [];
+      state.posts.status = 'loading';   
+  },
+  [fetchPostsNew.fulfilled]: (state, action) => {
+      state.posts.items = action.payload;
+      state.posts.status = 'loaded';   
+  },
+  [fetchPostsNew.rejected]: (state) => {
+      state.posts.items = [];
+      state.posts.status = 'error';   
+  },
+
+
+
+[fetchPostsPopular.pending]: (state) => {
+    state.posts.items = [];
+    state.posts.status = 'loading';   
+},
+[fetchPostsPopular.fulfilled]: (state, action) => {
+    state.posts.items = action.payload;
+    state.posts.status = 'loaded';   
+},
+[fetchPostsPopular.rejected]: (state) => {
+    state.posts.items = [];
+    state.posts.status = 'error';   
+},
+
+
 
     [fetchTags.pending]: (state) => {
         state.tags.items = [];
@@ -63,6 +112,20 @@ export const postsSlice = createSlice({
     },
 
 
+    [fetchTagsByName.pending]: (state) => {
+      state.allTagsByName.items = [];
+      state.allTagsByName.status = 'loading';   
+  },
+  [fetchTagsByName.fulfilled]: (state, action) => {
+      state.allTagsByName.items = action.payload;
+      state.allTagsByName.status = 'loaded';   
+  },
+  [fetchTagsByName.rejected]: (state) => {
+      state.allTagsByName.items = [];
+      state.allTagsByName.status = 'error';   
+  },
+
+
 
     [fetchRemovePosts.pending]: (state, action) => {
       state.posts.items = state.posts.items.filter(obj => obj._id !== action.meta.arg)  
@@ -70,6 +133,8 @@ export const postsSlice = createSlice({
     
   },
 })
+
+export const allTagsByNameSelector = (state) => state.posts.allTagsByName.items
 
 // Action creators are generated for each case reducer function
 export const { } = postsSlice.actions

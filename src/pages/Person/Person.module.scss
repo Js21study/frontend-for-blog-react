@@ -1,0 +1,29 @@
+.root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+
+    @media screen and (max-width: 600px){
+      flex-direction: column;
+    }
+  }
+  
+  .avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 200px;
+    margin-right: 10px;
+  }
+  
+  .userName {
+    font-weight: 500;
+    font-size: 36px;
+  }
+  
+  .userDetails {
+    display: flex;
+  }
+  
+
+  

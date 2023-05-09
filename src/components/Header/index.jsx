@@ -37,7 +37,8 @@ export const Header = () => {
           <div className={styles.buttons}>
             {isAuth ? (
               <>
-                <Button variant='text' color="secondary" size="large">{data.fullName}</Button>
+
+               <Link to={`/person/${data._id}`}><Button variant='text' color="secondary" size="large"> <img className={styles.avatar} src={data.avatarUrl || '/noavatar.png'} alt={data.fullName} />{data.fullName}</Button></Link> 
                 <Link to="/add-post">
                   <Button variant="contained" color="secondary" size="large">Create a post</Button>
                 </Link>

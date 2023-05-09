@@ -7,13 +7,19 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import instance from "../axiosRef";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCommentsByIdPost } from "../redux/slices/comments";
+import { dataSelector } from "../redux/slices/auth";
 
 export const FullPost = () => {
   const userData = useSelector(state => state.auth.data)
   const [data, setData] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const {id} = useParams();
+  const {comments} = useSelector(state => state.comments)
+  const isCommentsLoading = comments.status === 'loading'
+  const dispatch = useDispatch()
+  const dataAuthUser = useSelector(dataSelector)
 
   useEffect(() => {
     setIsLoading(true)
@@ -27,10 +33,16 @@ export const FullPost = () => {
    })
   }, [])
 
+  useEffect(() => {
+    dispatch(fetchCommentsByIdPost(id))
+  }, [])
+ 
+
   if (isLoading) {
     return <Post isLoading={isLoading} isFullPost/>
   }
-  
+
+
   return (
     <>
       <Post
@@ -49,27 +61,12 @@ export const FullPost = () => {
       >
         <ReactMarkdown children={data.text}/>
       </Post>
-      {/* <CommentsBlock
-        items={[
-          {
-            user: {
-              fullName: "Вася Пупкин",
-              avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-            },
-            text: "Это тестовый комментарий 555555",
-          },
-          {
-            user: {
-              fullName: "Иван Иванов",
-              avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-            },
-            text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-          },
-        ]}
-        isLoading={false}
+      <CommentsBlock
+        items={comments.items}
+        isLoading={isCommentsLoading}
       >
-        <Index />
-      </CommentsBlock> */}
+        <Index avatarUrl={dataAuthUser.avatarUrl? dataAuthUser.avatarUrl : '/noavatar.png'} idPost = {id}/>
+      </CommentsBlock>
     </>
   );
 };
