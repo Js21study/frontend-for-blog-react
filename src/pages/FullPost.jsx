@@ -62,7 +62,7 @@ export const FullPost = () => {
         <ReactMarkdown children={data.text}/>
       </Post>
       
-      <CommentsBlock
+      {/* <CommentsBlock
         items={comments.items}
         isLoading={isCommentsLoading}
       >
@@ -70,7 +70,7 @@ export const FullPost = () => {
          <Index avatarUrl={userData.avatarUrl? userData.avatarUrl : '/noavatar.png'} idPost = {id}/>
          : <div></div>
         }
-      </CommentsBlock>
+      </CommentsBlock> */}
      
     </>
   );
