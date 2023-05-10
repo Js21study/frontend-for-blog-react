@@ -19,7 +19,7 @@ export const FullPost = () => {
   const {comments} = useSelector(state => state.comments)
   const isCommentsLoading = comments.status === 'loading'
   const dispatch = useDispatch()
-  const dataAuthUser = useSelector(dataSelector)
+  const isAuth = useSelector(isAuthSelector)
 
   useEffect(() => {
     setIsLoading(true)
@@ -61,15 +61,17 @@ export const FullPost = () => {
       >
         <ReactMarkdown children={data.text}/>
       </Post>
-      {userData?
+      
       <CommentsBlock
         items={comments.items}
         isLoading={isCommentsLoading}
       >
+        {isAuth?
          <Index avatarUrl={userData.avatarUrl? userData.avatarUrl : '/noavatar.png'} idPost = {id}/>
+         : <div></div>
+        }
       </CommentsBlock>
-      : <div></div>
-      }
+     
     </>
   );
 };
