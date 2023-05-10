@@ -66,10 +66,10 @@ export const FullPost = () => {
         items={comments.items}
         isLoading={isCommentsLoading}
       >
-        {isAuth?
+     
          <Index avatarUrl={userData.avatarUrl? userData.avatarUrl : '/noavatar.png'} idPost = {id}/>
-         : <div></div>
-        }
+     
+        
       </CommentsBlock>
      
     </>
