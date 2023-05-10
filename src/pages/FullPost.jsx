@@ -9,7 +9,7 @@ import instance from "../axiosRef";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCommentsByIdPost } from "../redux/slices/comments";
-import { dataSelector } from "../redux/slices/auth";
+import { dataSelector, isAuthSelector } from "../redux/slices/auth";
 
 export const FullPost = () => {
   const userData = useSelector(state => state.auth.data)
