@@ -61,12 +61,15 @@ export const FullPost = () => {
       >
         <ReactMarkdown children={data.text}/>
       </Post>
+      {userData?
       <CommentsBlock
         items={comments.items}
         isLoading={isCommentsLoading}
       >
-        {userData? <Index avatarUrl={userData.avatarUrl? userData.avatarUrl : '/noavatar.png'} idPost = {id}/>: ''}
+         <Index avatarUrl={userData.avatarUrl? userData.avatarUrl : '/noavatar.png'} idPost = {id}/>
       </CommentsBlock>
+      : <div></div>
+      }
     </>
   );
 };
