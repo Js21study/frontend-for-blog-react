@@ -65,7 +65,7 @@ export const FullPost = () => {
         items={comments.items}
         isLoading={isCommentsLoading}
       >
-        <Index avatarUrl={dataAuthUser.avatarUrl? dataAuthUser.avatarUrl : '/noavatar.png'} idPost = {id}/>
+        <Index avatarUrl={userData.avatarUrl? userData.avatarUrl : '/noavatar.png'} idPost = {id}/>
       </CommentsBlock>
     </>
   );
