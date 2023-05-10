@@ -81,8 +81,8 @@ export const Registration = () => {
         <TextField
         type='url'  
         error={Boolean(errors.avatarUrl)}
-        {...register('avatarUrl', {required: 'https://www...'})}
-        helperText={errors.avatarUrl ? errors.avatarUrl.message : ''}
+        {...register('avatarUrl')}
+        helperText={errors.avatarUrl ? errors.avatarUrl.message : 'Please, add url for your avatar'}
         className={styles.field} 
         label="Avatar" 
         fullWidth />
