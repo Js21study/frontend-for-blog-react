@@ -26,6 +26,7 @@ export const Registration = () => {
       fullName: '',
       email: '',
       password: '',
+      avatarUrl: '',
     },
     mode: 'onChange',
   })
@@ -76,6 +77,14 @@ export const Registration = () => {
         helperText={errors.password ? errors.password.message : ''}
         className={styles.field} 
         label="Password" 
+        fullWidth />
+        <TextField
+        type='url'  
+        error={Boolean(errors.avatarUrl)}
+        {...register('avatarUrl', {required: 'https://www...'})}
+        helperText={errors.avatarUrl ? errors.avatarUrl.message : ''}
+        className={styles.field} 
+        label="Avatar" 
         fullWidth />
       <Button disabled={!isValid} type='submit' size="large" variant="contained" color='success' fullWidth>
         Send
